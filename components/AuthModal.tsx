@@ -1,18 +1,19 @@
 "use client"
 
-import { useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/navigation"
 import Modal from "./Modal"
-import { Auth } from "@supabase/auth-ui-react"
-import { ThemeSupa } from "@supabase/auth-ui-shared"
 import useAuthModal from "@/hooks/useAuthModal"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import Input from "./Input"
+import Button from "./Button"
+import { AiFillGoogleCircle } from "react-icons/ai"
 
 const AuthModal = () => {
-  const supabaseClient = useSupabaseClient();
   const router = useRouter();
-  const {session} = useSessionContext();
+  const {session} = {session: ''};
   const { onClose, isOpen} = useAuthModal()
+  const [isLoading, setIsLoading] = useState(false)
+
 
 
    useEffect(() => {
@@ -34,21 +35,62 @@ const AuthModal = () => {
     isOpen={isOpen}
     onChange={onChange}>
 
-      <Auth supabaseClient={supabaseClient}
-      theme="dark"
-      magicLink
-      providers={["github"]}
-      appearance={{
-        theme: ThemeSupa,
-        variables: {
-          default: {
-            colors: {
-              brand: "#404040",
-              brandAccent: "#22c55e"
-            }
-          }
-        }
-      }} />
+<div className=" flex flex-col gap-y-6 mb-6">
+<Button disabled={isLoading} type="submit" className=" bg-neutral-700 rounded-md text-white
+gap-x-2 flex flex-row justify-center items-center">
+        <AiFillGoogleCircle size={26}/> Sign in with Google
+        </Button>
+      
+      <hr className=" border-neutral-700" />
+</div>
+
+     <form className=" flex flex-col gap-y-4">
+     <div>
+          <div className="pb-1 ">
+          Full name
+          </div>
+          <Input 
+          id="song"
+          type="text"
+          disabled={isLoading}
+          placeholder="Your full name"
+         
+          />
+        </div>
+
+        <div>
+          <div className="pb-1">
+          Email address
+          </div>
+          <Input 
+          id="song"
+          type="text"
+          disabled={isLoading}
+          placeholder="Your email address"
+         
+          />
+        </div>
+
+        <div>
+          <div className="pb-1">
+          Password
+          </div>
+          <Input 
+          id="song"
+          type="text"
+          disabled={isLoading}
+          placeholder="Your password"
+         
+          />
+        </div>
+
+        <Button disabled={isLoading} type="submit" className=" rounded-md text-white">
+          Sign up
+        </Button>
+
+
+     </form>
+
     </Modal>
   )
 }
