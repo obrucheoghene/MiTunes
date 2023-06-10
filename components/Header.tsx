@@ -4,11 +4,14 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
-import Button from "./Button";
-import useAuthModal from "@/hooks/useAuthModal";
-import { useUser } from "@/hooks/useUser";
 import { FaUserAlt } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+
+import Button from "./Button";
+import { useUser } from "@/hooks/useUser";
+
+import useSigninModal from "@/hooks/useSigninModal";
+import useSignupModal from "@/hooks/useSignupModal";
 
 interface HeaderProps {
     children: React.ReactNode;
@@ -16,20 +19,14 @@ interface HeaderProps {
 }
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const router = useRouter();
-    const authModal = useAuthModal();
-    const { user } = useUser();
+    const signupModal = useSignupModal()
+    const signinModal = useSigninModal()
+    const { user, signOut } = useUser();
 
     const handleLogout = async () => {
-        // const { error } = await supabaseClient.auth.signOut();
-        const { error } = {error: ''};
-        // TODO: Reset andy playing song
+        signOut();
         router.refresh();
-
-        if (error) {
-            toast.error(error);
-        }else{
-            toast.success('Logged out!');
-        }
+        toast.success('Logged out!');
     };
 
     return (
@@ -84,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         <>
                             <div>
                                 <Button
-                                    onClick={authModal.onOpen}
+                                    onClick={signupModal.onOpen}
                                     className=" bg-transparent text-neutral-300 font-medium"
                                 >
                                     Sign up
@@ -93,10 +90,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
                             <div>
                                 <Button
-                                    onClick={authModal.onOpen}
+                                    onClick={signinModal.onOpen}
                                     className=" bg-white px-6 py-2 "
                                 >
-                                    Log in
+                                    Sign in
                                 </Button>
                             </div>
                         </>

@@ -1,19 +1,20 @@
+import { Song } from "@/types";
 import { create } from "zustand";
 
 interface PlayerStore {
-    ids: string[];
-    activeId?: string;
-    setId: (id: string )=> void;
-    setIds: (ids: string[]) => void;
+    playList: Song[];
+    activeSong?: Song | null;
+    setActiveSong: (song: Song )=> void;
+    setPlayList: (songs: Song[]) => void;
     reset: () => void;
 }
 
 const usePlayer = create<PlayerStore>((set) => ({
-    ids: [],
-    activeId: undefined,
-    setId: (id: string) => set({activeId: id}),
-    setIds: (ids: string[]) => set({ids: ids}),
-    reset: () => set({ids: [], activeId: undefined})
+    playList: [],
+    activeSong: undefined,
+    setActiveSong: (song: Song) => set({activeSong: song}),
+    setPlayList: (songs: Song[]) => set({playList: songs}),
+    reset: () => set({playList: [], activeSong: null})
 }))
 
 export default usePlayer

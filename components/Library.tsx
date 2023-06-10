@@ -18,7 +18,6 @@ const Library: React.FC<librayProps> = ({songs}) => {
     const uploadModal = useUploadModal();
     const  onPlay = useOnPlay(songs)
 
-    const player = usePlayer();
 
     const onClick = () => {
         if(!user) {
@@ -28,10 +27,7 @@ const Library: React.FC<librayProps> = ({songs}) => {
 
     }
 
-    // const playLibraySongs = (id: string) => {
-    //     player.setId(id);
-    //     player.setIds(songs.map((song)=> (song.id)))
-    // }
+
 
   return (
     <div className=" flex flex-col">
@@ -49,7 +45,7 @@ const Library: React.FC<librayProps> = ({songs}) => {
         <div className=' flex flex-col gap-y-2 mt-4 px-3'>
                 {
                     songs.map((song) => (
-                       <MediaItem onClick={(id: string) => onPlay(id)}
+                       <MediaItem onClick={(song: Song) => onPlay(song)}
                        key={song.id}
                        data={song}
                        />

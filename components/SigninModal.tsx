@@ -2,45 +2,76 @@
 
 import { useRouter } from "next/navigation"
 import Modal from "./Modal"
-import useAuthModal from "@/hooks/useAuthModal"
 import { useEffect, useState } from "react"
 import Input from "./Input"
 import Button from "./Button"
 import { AiFillGoogleCircle } from "react-icons/ai"
-import { FieldValues, useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
+import useSigninModal from "@/hooks/useSigninModal"
+import useSignupModal from "@/hooks/useSignupModal"
+import { useUser } from "@/hooks/useUser"
+import { Message } from "@/types"
+import { appwriteWebClientAccount } from "@/libs/appwriteWeb"
 
-const AuthModal = () => {
+const SigninModal = () => {
   const router = useRouter();
-  const { session } = { session: '' };
-  const { onClose, isOpen } = useAuthModal()
+  const { onClose, isOpen } = useSigninModal()
+  const signupModal = useSignupModal()
   const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<Message | null>(null);
 
-  const { register, handleSubmit, formState: {errors} } = useForm<FieldValues>({
+  const { user, setCurrentUser} = useUser()
+
+  interface SignInFormValues {
+    email: string,
+    password: string
+  }
+
+  const { register, handleSubmit, reset, formState: {errors} } = useForm<SignInFormValues>({
     defaultValues: {
-      fullname: '',
       email: '',
       password: ''
     }
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = (values) => console.log(values);
+  const onSubmit: SubmitHandler<SignInFormValues> = async (values) => {
+    setIsLoading(true);
+    setMessage(null);
+   try {
+    await appwriteWebClientAccount.createEmailSession(values.email, values.password);
+    setCurrentUser();
+   } catch (error) {
+    console.log(error);
+    setMessage({ error: (error as Error)?.message })
+   }finally{
+    setIsLoading(false)
+   }
+    
+  }
 
 
   useEffect(() => {
-    if (session) {
+    if (user) {
       router.refresh();
+      reset()
       onClose();
     }
-  }, [session, router, onClose],)
+  }, [user, router, reset, onClose])
+
   const onChange = (open: boolean) => {
     if (!open) {
       onClose();
     }
   }
 
+  const openSignupModal = () => {
+    onClose()
+    signupModal.onOpen()
+}
+
   return (
     <Modal title="Welcome back"
-      description="Login to your account"
+      description="Sign in your account"
       isOpen={isOpen}
       onChange={onChange}>
 
@@ -54,19 +85,6 @@ gap-x-2 flex flex-row justify-center items-center">
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col gap-y-4">
-        <div>
-          <div className="pb-1 ">
-            Full name
-          </div>
-          <Input
-            id="fullname"
-            type="text"
-            disabled={isLoading}
-            placeholder="Your full name"
-            {...register("fullname", {required: true})}
-          />
-          {errors?.fullname && <span className="text-red-600">Fullname is required</span>}
-        </div>
 
         <div>
           <div className="pb-1">
@@ -97,21 +115,23 @@ gap-x-2 flex flex-row justify-center items-center">
         </div>
 
         <Button disabled={isLoading} type="submit" className=" rounded-md text-white">
-          Sign up
+          Log in
         </Button>
 
 
 
       </form>
 
-      <div className=" flex flex-col justify-content items-center mt-4 gap-y-2 ">
+      <div className="flex flex-col justify-content items-center mt-4 gap-y-2 text-sm pb-2">
         <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Send magic link</p>
         <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Forgot your password?</p>
-        <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Already have and account? Sign in</p>
+        <p onClick={openSignupModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Already have and account? Sign in</p>
       </div>
+
+      { message?.error && <p className="text-red-600 text-center">{message.error}</p>}
 
     </Modal>
   )
 }
 
-export default AuthModal
+export default SigninModal

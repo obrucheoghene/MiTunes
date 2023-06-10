@@ -1,21 +1,19 @@
+import { appwriteServerClientDatabases } from "@/libs/appwriteServer";
+import { appwriteConfig } from "@/libs/configs";
 import { Song } from "@/types";
-import { cookies} from "next/headers"
-const getSongs = async ():Promise<Song[]> => {
-    // const supabase = createServerComponentClient({
-    //     cookies: cookies
-    // })
+const getSongs = async (): Promise<Song[]> => {
+    const {databaseId, songsCollectionId} = appwriteConfig
 
-    // const {data, error} = await supabase
-    // .from('songs')
-    // .select('*')
-    // .order('created_at', {ascending: false});
-
-    // if(error){
-    //     console.log(error);
-    // }
-
-    // return (data as any) || [];
-    return [];
+    try {
+        const response = await appwriteServerClientDatabases.listDocuments(databaseId, songsCollectionId)
+        if (response.documents.length) {
+            const data = response.documents.map((item) => ({...item, id: item.$id})) 
+            return data as any
+        }
+    } catch (error) {
+        console.log(error)
+    }
+     return [];
 }
 
 export default getSongs;

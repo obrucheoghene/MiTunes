@@ -2,7 +2,7 @@
 const nextConfig = {
     images: {
         domains: [
-            "kgteswynzkhdblagztiu.supabase.co"
+            "cloud.appwrite.io"
         ]
     }
 }

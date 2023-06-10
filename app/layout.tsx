@@ -10,7 +10,7 @@ import Player from '@/components/Player'
 const font = Figtree({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Spotify Clone',
+  title: 'mi-tunes',
   description: 'Listen to music',
 }
 
@@ -22,7 +22,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-  const userSongs = await getSongsByUserId();
+
+ 
 
   return (
     <html lang="en">
@@ -30,14 +31,11 @@ export default async function RootLayout({
         <ToasterProvider/>
           <UserProvider>
             <ModalProvider/>
-          <Sidebar songs={userSongs}>
+            <Sidebar >
               {children}
             </Sidebar>
-
             <Player/>
           </UserProvider>
-
-
       </body>
     </html>
   )

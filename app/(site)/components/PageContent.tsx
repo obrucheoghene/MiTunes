@@ -19,7 +19,7 @@ const PageContent: React.FC<pageContentProps> = ({songs}) => {
      md:grid-cols-3 lg:grid-cols4 xl:grid-cols-5
      2xl:grid-cols-8 gap-4 mt-4">
         {songs.map((item) => (
-            <SongItem key={item.id} data={item} onClick={(id: string) => onPlay(id)}/>
+            <SongItem key={item.id} song={item} onClick={(song: Song) => onPlay(song)}/>
         ))}
      </div>
   )

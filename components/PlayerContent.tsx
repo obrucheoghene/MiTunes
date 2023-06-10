@@ -12,47 +12,46 @@ import useSound from "use-sound"
 import { useEffect, useState } from "react";
 interface PlayerContentProps {
     song: Song;
-    songUrl: string;
 }
 
-const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
-    const player = usePlayer();
+const PlayerContent: React.FC<PlayerContentProps> = ({ song: activeSong }) => {
+    const {playList, setPlayList, setActiveSong} = usePlayer();
     const [volume, setVolume] = useState(1)
     const [isPlaying, setIsPlaying] = useState(false)
     const PlayIcon = isPlaying ? BsPauseFill : BsPlayFill;
     const VolumeIcon = volume === 0 ?  HiSpeakerXMark : HiSpeakerWave;
     const onPlayNext = () => {
-        if (player.ids.length === 0) {
+        if (playList.length === 0) {
             return;
         }
 
-        const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+        const currentIndex = playList.findIndex((song) => song.id === activeSong.id);
 
-        const nextSong = player.ids[currentIndex + 1];
+        const nextSong = playList[currentIndex + 1];
 
         if(!nextSong) {
-            return player.setId(player.ids[0]);
+            return setActiveSong(playList[0]);
         }
 
-        player.setId(nextSong);
+        setActiveSong(nextSong);
     }
     const onPlayPrevious = () => {
-        if (player.ids.length === 0) {
+        if (playList.length === 0) {
             return;
         }
 
-        const currentIndex = player.ids.findIndex((id) => id === player.activeId);
+        const currentIndex = playList.findIndex((song) => song.id === activeSong.id);
 
-        const previousSong = player.ids[currentIndex - 1];
+        const previousSong = playList[currentIndex - 1];
 
         if(!previousSong) {
-            return player.setId(player.ids[player.ids.length - 1]);
+            return setActiveSong(playList[playList.length - 1]);
         }
 
-        player.setId(previousSong);
+        setActiveSong(previousSong);
     }
 
-    const [play, {pause, sound}] = useSound(songUrl, 
+    const [play, {pause, sound}] = useSound(activeSong.songPath, 
         {volume: volume,
         onplay: () => setIsPlaying(true),
         onend: () => {
@@ -89,8 +88,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
         <div className=" grid grid-cols-2 md:grid-cols-3 h-full">
             <div className="flex w-full justify-start">
                 <div className="flex item-center gap-x-4">
-                    <MediaItem data={song} />
-                    <LikeButton songId={song.id} />
+                    <MediaItem data={activeSong} />
+                    <LikeButton songId={activeSong.id} />
                 </div>
             </div>
 

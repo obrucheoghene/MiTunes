@@ -4,8 +4,15 @@ import ListItem from "@/components/ListItem";
 import PageContent from "@/app/(site)/components/PageContent";
 
 export const revalidate = 0 // disable cache
-export default async function Home() {
+export default async function Home({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const songs = await getSongs()
+
 
   return (
     <div className=" bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto">
