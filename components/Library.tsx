@@ -7,24 +7,45 @@ import { Song } from '@/types';
 import MediaItem from './MediaItem';
 import useOnPlay from '@/hooks/useOnPlay';
 import useSigninModal from '@/hooks/useSigninModal';
+import { useEffect, useState } from 'react';
+import { appwriteWebClientDatabases } from '@/libs/appwriteWeb';
+import { appwriteConfig } from '@/libs/configs';
+import { Query } from 'appwrite';
 
-interface librayProps {
-    songs: Song[]
-}
-const Library: React.FC<librayProps> = ({songs}) => {
+
+const Library = () => {
     const {user} = useUser()
     const uploadModal = useUploadModal();
     const signinModal = useSigninModal()
-    const  onPlay = useOnPlay(songs)
-
+    const {databaseId, songsCollectionId} = appwriteConfig
+    const  [userSongs, setUserSongs] = useState<Song[]>([]);
+    const  onPlay = useOnPlay(userSongs)
 
     const onClick = () => {
         if(!user) {
             return signinModal.onOpen();
         }
         return uploadModal.onOpen();
-
     }
+
+    useEffect(() => {
+        const getSongsByUserId = async () => {
+            if (!user){
+                setUserSongs([])
+                return
+            }
+            const response = await appwriteWebClientDatabases
+            .listDocuments(databaseId, songsCollectionId, [Query.equal('userId', [user.id])])
+            console.log(response.documents);
+            if (response.documents.length) {
+                const data = response.documents.map((item) => ({...item, id: item.$id})) 
+                setUserSongs(data as any)
+            }else{
+                setUserSongs([])
+            }
+        }
+        getSongsByUserId();
+    }, [databaseId, songsCollectionId, user])
 
 
 
@@ -43,7 +64,7 @@ const Library: React.FC<librayProps> = ({songs}) => {
         </div>
         <div className=' flex flex-col gap-y-2 mt-4 px-3'>
                 {
-                    songs.map((song) => (
+                    userSongs.map((song) => (
                        <MediaItem onClick={(song: Song) => onPlay(song)}
                        key={song.id}
                        data={song}
