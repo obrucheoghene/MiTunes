@@ -1,6 +1,6 @@
 "use client"
 
-import useAuthModal from "@/hooks/useAuthModal";
+import useSigninModal from "@/hooks/useSigninModal";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ interface LikeButtonProps {
 const LikeButton: React.FC<LikeButtonProps> = ({songId}) => {
     const router = useRouter();
 
-    const authModal = useAuthModal();
+    const signinModal = useSigninModal();
 
     const {user} = useUser();
     const [isLiked, setIsLiked] = useState(false);

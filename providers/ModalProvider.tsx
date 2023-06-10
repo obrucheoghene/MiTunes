@@ -1,6 +1,5 @@
 "use client";
 
-import AuthModal from "@/components/AuthModal";
 import SiginModal from "@/components/SigninModal";
 import SignupModal from "@/components/SignupModal";
 import UploadModal from "@/components/UploadModal";
@@ -18,7 +17,6 @@ const ModalProvider = () => {
 
     return (
         <>
-        <AuthModal/>
         <SiginModal/>
         <SignupModal/>
         <UploadModal/>

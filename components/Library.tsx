@@ -1,27 +1,26 @@
 "use client";
 import {TbPlaylist} from 'react-icons/tb'
 import {AiOutlinePlus} from 'react-icons/ai'
-import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
 import useUploadModal from '@/hooks/useUploadModal';
 import { Song } from '@/types';
 import MediaItem from './MediaItem';
-import usePlayer from '@/hooks/usePlayer';
 import useOnPlay from '@/hooks/useOnPlay';
+import useSigninModal from '@/hooks/useSigninModal';
 
 interface librayProps {
     songs: Song[]
 }
 const Library: React.FC<librayProps> = ({songs}) => {
-    const authModal = useAuthModal();
     const {user} = useUser()
     const uploadModal = useUploadModal();
+    const signinModal = useSigninModal()
     const  onPlay = useOnPlay(songs)
 
 
     const onClick = () => {
         if(!user) {
-            return authModal.onOpen
+            return signinModal.onOpen();
         }
         return uploadModal.onOpen();
 
