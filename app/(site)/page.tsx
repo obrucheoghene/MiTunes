@@ -1,6 +1,6 @@
 import getSongs from "@/actions/getSongs";
 import Header from "@/components/Header";
-import ListItem from "@/components/ListItem";
+import LikeItem from "@/components/LikeItem";
 import PageContent from "@/app/(site)/components/PageContent";
 
 export const revalidate = 0 // disable cache
@@ -23,7 +23,7 @@ export default async function Home({
         </h1>
         <div className=" grid grid-cols sm:grid-cols-2 xl:grid-cols-3
         2xl:grid-cols-4 gaap-3 mt-4">
-            <ListItem image="/images/liked.png"
+            <LikeItem image="/images/liked.png"
              name="Liked Songs" 
              href="liked"/>
         </div>

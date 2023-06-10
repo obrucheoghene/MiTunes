@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     return (
         <div
             className={twMerge(
-                `h-fit bg-gradient-to-b from-emerald-800 p-6`,
+                `h-fit bg-gradient-to-b from-orange-400 p-6`,
                 className
             )}
         >
@@ -66,13 +66,13 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         <div className=" flex gap-x-4 items-center">
                             <Button 
                             onClick={handleLogout}
-                            className="bg-white px-6 py-2"
+                            className="bg-white px-6 py-2 rounded-full"
                             >
                                 Logout
                             </Button>
                             <Button
                             onClick={() => router.push('/account')}
-                            className="bg-white"
+                            className="bg-white rounded-full"
                             >
                                 <FaUserAlt/>
                             </Button>
@@ -82,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                             <div>
                                 <Button
                                     onClick={signupModal.onOpen}
-                                    className=" bg-transparent text-neutral-300 font-medium"
+                                    className=" bg-transparent text-neutral-300 font-medium rounded-full"
                                 >
                                     Sign up
                                 </Button>
@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                             <div>
                                 <Button
                                     onClick={signinModal.onOpen}
-                                    className=" bg-white px-6 py-2 "
+                                    className=" bg-white px-6 py-2 rounded-full "
                                 >
                                     Sign in
                                 </Button>

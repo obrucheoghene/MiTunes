@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {FaPlay} from "react-icons/fa"
 
-interface ListItemProps{
+interface LikeItemProps{
      image: string;
      name: string;
      href: string;
 }
-const ListItem: React.FC<ListItemProps> = ({image, name, href}) => {
+const LikeItem: React.FC<LikeItemProps> = ({image, name, href}) => {
     const router = useRouter();
 
     const onClick = () => {
@@ -23,10 +23,10 @@ const ListItem: React.FC<ListItemProps> = ({image, name, href}) => {
         </div>
         <p className="font-medium truncate py-5">{name}</p>
         <div className=" absolute transition opacity-0 rounded-full
-         flex items-center bg-green-500 p-4 drop-shadow-md 
+         flex items-center bg-orange-400 p-4 drop-shadow-md 
          right-5 group-hover:opacity-100 hover:scale-110"><FaPlay/></div>
     </button>
   )
 }
 
-export default ListItem
+export default LikeItem
