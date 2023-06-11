@@ -3,36 +3,65 @@
 import { useRouter } from "next/navigation"
 
 import { Song } from "@/types"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useUser } from "@/hooks/useUser"
 import MediaItem from "@/components/MediaItem"
 import LikeButton from "@/components/LikeButton"
 import useOnPlay from "@/hooks/useOnPlay"
+import { appwriteWebClientDatabases } from "@/libs/appwriteWeb"
+import { appwriteConfig } from "@/libs/configs"
+import { Query } from "appwrite"
 
-interface LikedContentProps {
-    songs: Song[]
-}
-const LikedContent: React.FC<LikedContentProps> = ({songs}) => {
+
+const LikedContent = () => {
     const  router = useRouter()
-    const {isLoading, user} = useUser();
-    const onPlay = useOnPlay(songs)
+    const {user} = useUser();
+    const [likeSongs, setLikeSongs] = useState<Song[]>([])
+    const onPlay = useOnPlay(likeSongs)
+    const {databaseId, songsCollectionId, likedSongsCollectionId} = appwriteConfig
 
-    useEffect(() => {
-        
-        if(!isLoading && !user) {
+    const handleSetLikeSongs  = (data: any[]) => {
+            const songs = data.map((item) => ({...item, id: item.$id})) 
+            setLikeSongs(songs)
+    }   
+    useEffect(() => {   
+        if(!user) {
             router.replace('/');
+            return;
         }
-    },
-     [isLoading, user, router])
 
-     if (songs.length === 0 ) {
+        const fetchData = async () => {
+            try {
+              const likedSongRelationshipResponse = await appwriteWebClientDatabases
+              .listDocuments(databaseId, likedSongsCollectionId, [Query.equal('userId',user.id )])
+    
+                if (likedSongRelationshipResponse.documents.length) {
+                    console.log(likedSongRelationshipResponse.documents)
+                    const likeSongIds = likedSongRelationshipResponse.documents.map((item) => (item.songId));
+
+                    const findLikedSong = await appwriteWebClientDatabases
+                    .listDocuments(databaseId, songsCollectionId, [Query.equal('$id', likeSongIds )])
+                    handleSetLikeSongs(findLikedSong.documents)
+                }
+          
+            } catch (error) {
+              console.log(error);
+            }
+           }
+    
+           fetchData();
+    
+    },
+     [ user, router, databaseId, likedSongsCollectionId])
+
+     if (likeSongs.length === 0 ) {
         return ( <div className="flex flex-col gap-y-2 w-full px-6 text-neutral-400">
             No liked songs
         </div>)
      }
   return (
     <div className=" flex flex-col gap-y-2 w-full p-6">
-        {songs.map((song)=> (
+        {likeSongs.map((song)=> (
             <div key={song.id} className="flex items-center 
             gap-x-4 w-full">
                 <div className="flex-1"> 
