@@ -5,7 +5,7 @@ import { appwriteConfig } from "@/libs/configs";
 import { Query } from "node-appwrite";
 const getSongsByTitle = async (search: string):Promise<Song[]> => {
     const {databaseId, songsCollectionId} = appwriteConfig
-    if (search.length == 0) {
+    if (!search) {
         return getSongs()
     }
     try {

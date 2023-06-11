@@ -13,7 +13,6 @@ import { appwriteWebClientDatabases, appwriteWebClientStorage } from "@/libs/app
 import { appwriteConfig } from "@/libs/configs";
 import { ID } from "appwrite";
 import { getImageURL, getSongURL } from "@/libs/helpers";
-import { ThreeDots } from "react-loader-spinner";
 
 const UploadModal = () => {
   const uploadModal = useUploadModal();
@@ -81,7 +80,7 @@ const UploadModal = () => {
       description="Upload an mp3 file"
       isOpen={uploadModal.isOpen}
       onChange={onChange}>
-      <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col gap-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col gap-y-4 overflow-y-auto">
         <div>
           <div className="pb-1">
             Song title

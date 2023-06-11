@@ -36,7 +36,6 @@ const Library = () => {
             }
             const response = await appwriteWebClientDatabases
             .listDocuments(databaseId, songsCollectionId, [Query.equal('userId', [user.id]), Query.orderDesc('$createdAt')])
-            console.log(response.documents);
             if (response.documents.length) {
                 const data = response.documents.map((item) => ({...item, id: item.$id})) 
                 setUserSongs(data as any)
