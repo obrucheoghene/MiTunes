@@ -13,6 +13,7 @@ import { appwriteWebClientAccount } from "@/libs/appwriteWeb"
 import { ID, } from "appwrite"
 import { useUser } from "@/hooks/useUser"
 import { Message } from "@/types"
+import { APP_BASE_URL, appwriteConfig } from "@/libs/configs"
 
 const SignupModal = () => {
   const router = useRouter();
@@ -47,7 +48,8 @@ const SignupModal = () => {
       )
       await appwriteWebClientAccount.createEmailSession(values.email,
         values.password)
-      await appwriteWebClientAccount.createVerification("http://localhost:3001/verify")
+      const verificationURL = `${APP_BASE_URL}/verify`;
+      await appwriteWebClientAccount.createVerification(verificationURL)
       appwriteWebClientAccount.deleteSession('current');
       setMessage({ success: 'Check your email for the confirmation link' })
       reset();

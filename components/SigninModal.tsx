@@ -12,11 +12,13 @@ import useSignupModal from "@/hooks/useSignupModal"
 import { useUser } from "@/hooks/useUser"
 import { Message } from "@/types"
 import { appwriteWebClientAccount } from "@/libs/appwriteWeb"
+import useSendMagicLinkModal from "@/hooks/useSendMagicLinkModal"
 
 const SigninModal = () => {
   const router = useRouter();
   const { onClose, isOpen } = useSigninModal()
   const signupModal = useSignupModal()
+  const sendMagicLinkModal = useSendMagicLinkModal()
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<Message | null>(null);
 
@@ -69,6 +71,11 @@ const SigninModal = () => {
     signupModal.onOpen()
 }
 
+const openSendMagicLinkModal = () => {
+  onClose()
+  sendMagicLinkModal.onOpen()
+}
+
   return (
     <Modal title="Welcome back"
       description="Sign in your account"
@@ -115,7 +122,7 @@ gap-x-2 flex flex-row justify-center items-center">
         </div>
 
         <Button disabled={isLoading} type="submit" className=" rounded-md text-white">
-          Log in
+          Sign in
         </Button>
 
 
@@ -123,9 +130,9 @@ gap-x-2 flex flex-row justify-center items-center">
       </form>
 
       <div className="flex flex-col justify-content items-center mt-4 gap-y-2 text-sm pb-2">
-        <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Send magic link</p>
+        <p onClick={openSendMagicLinkModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Send magic link</p>
         <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Forgot your password?</p>
-        <p onClick={openSignupModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Already have and account? Sign in</p>
+        <p onClick={openSignupModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer"> {`Don't have an account? Sign up`}</p>
       </div>
 
       { message?.error && <p className="text-red-600 text-center">{message.error}</p>}
