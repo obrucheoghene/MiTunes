@@ -8,3 +8,5 @@ export const appwriteConfig = {
     songsBucketId: process.env.NEXT_PUBLIC_APPWRITE_SONGS_BUCKET_ID as string,
     imagesBucketId: process.env.NEXT_PUBLIC_APPWRITE_IMAGES_BUCKET_ID as string,
 }
+
+export const APP_BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL as string;
