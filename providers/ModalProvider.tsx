@@ -1,5 +1,7 @@
 "use client";
 
+import ForgotPasswordModal from "@/components/ForgotPasswordModal";
+import RecoverPasswordModal from "@/components/RecoverPasswordModal";
 import SendMagicLinkModal from "@/components/SendMagicLinkModal";
 import SendMagicLink from "@/components/SendMagicLinkModal";
 import SiginModal from "@/components/SigninModal";
@@ -26,7 +28,9 @@ const ModalProvider = () => {
         <SignupModal/>
         <UploadModal/>
         <SendMagicLinkModal/>
+        <ForgotPasswordModal/>
         {pathname.includes('/verify') && <VerifyModal/>}
+        {pathname.includes('/recover-password') && <RecoverPasswordModal/>}
         
         </>
     )

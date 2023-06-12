@@ -30,7 +30,7 @@ const VerifyModal = () => {
     })
 
     if (!userId || !secret) {
-        return router.replace('/');
+        router.replace('/');
     }
 
     interface VerifyFormValues {
@@ -41,6 +41,9 @@ const VerifyModal = () => {
     const onSubmit: SubmitHandler<VerifyFormValues> = async (values) => {
         setIsLoading(true);
         setMessage(null);
+        if (!userId || !secret) {
+            return;
+        }
         try {
             await appwriteWebClientAccount.createEmailSession(values.email, values.password);
             await appwriteWebClientAccount.updateVerification(userId, secret)
@@ -58,7 +61,7 @@ const VerifyModal = () => {
 
 
     return (
-        <Modal title="Welcome back"
+        <Modal title="Verify Account"
             description="Verify your account"
             isOpen={true}
             onChange={() => { }}>
