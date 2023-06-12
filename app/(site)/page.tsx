@@ -5,13 +5,8 @@ import PageContent from "@/app/(site)/components/PageContent";
 
 export const revalidate = 0 // disable cache
 
-interface HomeProps {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
 
-export default async function Home({
-  searchParams,
-}: HomeProps) {
+export default async function Home() {
   const songs = await getSongs()
 
 
