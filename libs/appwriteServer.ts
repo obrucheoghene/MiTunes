@@ -1,4 +1,4 @@
-import { Client, Databases } from 'node-appwrite'
+import { Client, Databases,  } from 'node-appwrite'
 import { appwriteConfig } from './configs';
 
 const {endpoint, project, apiKey} = appwriteConfig;
