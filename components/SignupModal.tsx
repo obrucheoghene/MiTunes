@@ -78,6 +78,14 @@ const SignupModal = () => {
     signinModal.onOpen()
   }
 
+  const handleSignInWithGoogle = async () =>{
+    console.log('Gorly')
+      try {
+        await appwriteWebClientAccount.createOAuth2Session('google', APP_BASE_URL, `${APP_BASE_URL}/failure`)
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
 
   return (
@@ -87,7 +95,7 @@ const SignupModal = () => {
       onChange={onChange}>
 
       <div className=" flex flex-col gap-y-6 mb-6">
-        <Button disabled={isLoading} type="submit" className=" bg-neutral-700 rounded-md text-white
+        <Button onClick={handleSignInWithGoogle} disabled={isLoading} type="submit" className=" bg-neutral-700 rounded-md text-white
 gap-x-2 flex flex-row justify-center items-center">
           <AiFillGoogleCircle size={26} /> Sign in with Google
         </Button>

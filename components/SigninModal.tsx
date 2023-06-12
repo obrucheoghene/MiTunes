@@ -13,12 +13,15 @@ import { useUser } from "@/hooks/useUser"
 import { Message } from "@/types"
 import { appwriteWebClientAccount } from "@/libs/appwriteWeb"
 import useSendMagicLinkModal from "@/hooks/useSendMagicLinkModal"
+import useForgotPasswordModal from "@/hooks/useForgotPasswordModal"
+import { APP_BASE_URL } from "@/libs/configs"
 
 const SigninModal = () => {
   const router = useRouter();
   const { onClose, isOpen } = useSigninModal()
   const signupModal = useSignupModal()
   const sendMagicLinkModal = useSendMagicLinkModal()
+  const forgotPasswordModal = useForgotPasswordModal();
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<Message | null>(null);
 
@@ -75,6 +78,19 @@ const openSendMagicLinkModal = () => {
   onClose()
   sendMagicLinkModal.onOpen()
 }
+const openForgotPasswordModal = () => {
+  onClose()
+  forgotPasswordModal.onOpen()
+}
+
+const handleSignInWithGoogle = async () =>{
+  console.log('Gorly')
+    try {
+      await appwriteWebClientAccount.createOAuth2Session('google', APP_BASE_URL, `${APP_BASE_URL}/failure`)
+    } catch (error) {
+      console.log(error)
+    }
+}
 
   return (
     <Modal title="Welcome back"
@@ -83,7 +99,7 @@ const openSendMagicLinkModal = () => {
       onChange={onChange}>
 
       <div className=" flex flex-col gap-y-6 mb-6">
-        <Button disabled={isLoading} type="submit" className=" bg-neutral-700 rounded-md text-white
+        <Button onClick={handleSignInWithGoogle} disabled={isLoading} type="submit" className=" bg-neutral-700 rounded-md text-white
 gap-x-2 flex flex-row justify-center items-center">
           <AiFillGoogleCircle size={26} /> Sign in with Google
         </Button>
@@ -131,7 +147,7 @@ gap-x-2 flex flex-row justify-center items-center">
 
       <div className="flex flex-col justify-content items-center mt-4 gap-y-2 text-sm pb-2">
         <p onClick={openSendMagicLinkModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Send magic link</p>
-        <p className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Forgot your password?</p>
+        <p onClick={openForgotPasswordModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer">Forgot your password?</p>
         <p onClick={openSignupModal} className="text-neutral-500 underline hover:text-neutral-600 cursor-pointer"> {`Don't have an account? Sign up`}</p>
       </div>
 
