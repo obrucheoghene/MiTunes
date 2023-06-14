@@ -1,3 +1,5 @@
+import { APP_NAME } from "@/libs/configs"
+import Image from "next/image"
 import Link from "next/link"
 import { IconType } from "react-icons"
 import { twMerge } from "tailwind-merge"
@@ -13,7 +15,8 @@ const SidebarItem:React.FC<SidebarItemProps> = ({icon: Icon, label, active, href
     w-full gap-x-4 text-md font-medium 
     cursor-pointer hover:text-white transition 
     text-neutral-400`, active && "text-white" )}>
-        <Icon size={26}/>
+        {label === APP_NAME ? <Image src='/images/logo.png' height={24} width={24} alt="Logo"/> : <Icon size={26}/> }
+        
         <p className="truncate w-full">{label}</p>
     </Link>
   )

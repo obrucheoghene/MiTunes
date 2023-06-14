@@ -6,9 +6,9 @@ import {BiSearch} from "react-icons/bi"
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
 import Library from "./Library";
-import { Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
 import { twMerge } from "tailwind-merge";
+import { APP_NAME } from "@/libs/configs";
 interface SidebarProps {
     children: React.ReactNode
 }
@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({children}) => {
     const {activeSong}  = usePlayer();
     const routes = useMemo(() => [
         {
-            label: 'Home',
+            label: APP_NAME,
             active: pathname !== '/search',
             href: '/',
             icon: HiHome
