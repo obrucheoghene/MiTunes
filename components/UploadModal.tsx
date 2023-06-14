@@ -76,7 +76,7 @@ const UploadModal = () => {
   }
   return (
     <Modal
-      title="Add a song"
+      title="Add music"
       description="Upload an mp3 file"
       isOpen={uploadModal.isOpen}
       onChange={onChange}>
@@ -96,7 +96,7 @@ const UploadModal = () => {
         </div>
         <div>
           <div className="pb-1">
-            Author
+            Artist
           </div>
           <Input
             id="author"
@@ -105,7 +105,7 @@ const UploadModal = () => {
             {...register('author', { required: true })}
             placeholder="Song author"
           />
-          {errors?.title && <span className="text-red-600">Author is required</span>}
+          {errors?.title && <span className="text-red-600">Artist is required</span>}
 
         </div>
 
@@ -142,7 +142,7 @@ const UploadModal = () => {
 
         <Button disabled={isLoading} type="submit" className=" rounded-md text-white ">
           {isLoading ? 'Uploading...' : 'Upload'}
-          
+
         </Button>
       </form>
     </Modal>

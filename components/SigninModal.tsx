@@ -67,7 +67,7 @@ const sendVerification  = async () => {
  }
 }
 
-  useEffect(() => {
+useEffect(() => {
     
     if (user?.isVerified) {
       router.refresh();
@@ -100,9 +100,8 @@ const openForgotPasswordModal = () => {
 }
 
 const handleSignInWithGoogle = async () =>{
-  console.log('Gorly')
     try {
-      await appwriteWebClientAccount.createOAuth2Session('google', APP_BASE_URL, `${APP_BASE_URL}/failure`)
+      await appwriteWebClientAccount.createOAuth2Session('google', APP_BASE_URL, APP_BASE_URL)
     } catch (error) {
       console.log(error)
     }
@@ -156,9 +155,6 @@ gap-x-2 flex flex-row justify-center items-center">
         <Button disabled={isLoading} type="submit" className=" rounded-md text-white">
           Sign in
         </Button>
-
-
-
       </form>
 
       <div className="flex flex-col justify-content items-center mt-4 gap-y-2 text-sm pb-2">
