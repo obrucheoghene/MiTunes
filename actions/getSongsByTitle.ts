@@ -3,17 +3,18 @@ import getSongs from "./getSongs";
 import { appwriteServerClientDatabases } from "@/libs/appwriteServer";
 import { appwriteConfig } from "@/libs/configs";
 import { Query } from "node-appwrite";
-const getSongsByTitle = async (search: string):Promise<Song[]> => {
+const getSongsByTitle = async (searchText: string):Promise<Song[]> => {
     const {databaseId, songsCollectionId} = appwriteConfig
-    if (!search) {
+    if (!searchText) {
         return getSongs()
     }
     try {
         const response = await appwriteServerClientDatabases.
-        listDocuments(databaseId, songsCollectionId, [Query.search('title', search )]  )
-        console.log(response.documents)
+        listDocuments(databaseId, songsCollectionId )
         if (response.documents.length) {
-            const data = response.documents.map((item) => ({...item, id: item.$id})) 
+            const regex = new RegExp(searchText, 'i')
+            const searchResult = response.documents.filter((song: Record<string, any>) =>  regex.test(song.title) || regex.test(song.author));
+            const data = searchResult.map((item) => ({...item, id: item.$id})) 
             return data as any
         }
     } catch (error) {
