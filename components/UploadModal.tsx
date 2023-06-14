@@ -29,7 +29,7 @@ const UploadModal = () => {
   }
   const { register, handleSubmit, reset, formState: { errors } } = useForm<UploadFormValues>({
     defaultValues: {
-      author: '',
+      author: user?.fullname,
       title: '',
       song: null,
       image: null,
@@ -101,6 +101,7 @@ const UploadModal = () => {
           <Input
             id="author"
             disabled={isLoading}
+            value={user?.fullname}
             {...register('author', { required: true })}
             placeholder="Song author"
           />
