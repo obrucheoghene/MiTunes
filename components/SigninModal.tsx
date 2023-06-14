@@ -15,6 +15,7 @@ import { appwriteWebClientAccount } from "@/libs/appwriteWeb"
 import useSendMagicLinkModal from "@/hooks/useSendMagicLinkModal"
 import useForgotPasswordModal from "@/hooks/useForgotPasswordModal"
 import { APP_BASE_URL } from "@/libs/configs"
+import { FaAws } from "react-icons/fa"
 
 const SigninModal = () => {
   const router = useRouter();
@@ -45,6 +46,7 @@ const SigninModal = () => {
    try {
     await appwriteWebClientAccount.createEmailSession(values.email, values.password);
     setCurrentUser();
+     
    } catch (error) {
     console.log(error);
     setMessage({ error: (error as Error)?.message })
@@ -53,14 +55,28 @@ const SigninModal = () => {
    }
     
   }
+const sendVerification  = async () => {
+ try {
+  const verificationURL = `${APP_BASE_URL}/verify`;
+  await appwriteWebClientAccount.createVerification(verificationURL)
+  await appwriteWebClientAccount.deleteSession('current');
+  setMessage({ success: 'Check your email for the confirmation link' })
 
+ } catch (error) {
+  console.log(error)
+ }
+}
 
   useEffect(() => {
-    if (user) {
+    
+    if (user?.isVerified) {
       router.refresh();
       reset()
       onClose();
+    } else if (user && !user?.isVerified) {
+      sendVerification()
     }
+
   }, [user, router, reset, onClose])
 
   const onChange = (open: boolean) => {
@@ -152,6 +168,7 @@ gap-x-2 flex flex-row justify-center items-center">
       </div>
 
       { message?.error && <p className="text-red-600 text-center">{message.error}</p>}
+      { message?.success && <p className="text-center">{message.success}</p>}
 
     </Modal>
   )
