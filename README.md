@@ -2,7 +2,9 @@
 
 ### Harmonizing NestJs and Appwrite to Bring Music to Your Fingertips
 
-![1](https://github.com/wilfredcloud/MiTunes/assets/111436934/2aa1e41e-7af2-45ae-987d-711001295408)
+<!-- ![1](https://github.com/wilfredcloud/MiTunes/assets/111436934/2aa1e41e-7af2-45ae-987d-711001295408) -->
+
+![Mitunes Cover](https://github.com/wilfredcloud/MiTunes/assets/111436934/d43b2032-06e1-409e-aac2-b27b8fde29cc)
 
 
 ## Team Details
