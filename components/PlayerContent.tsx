@@ -10,6 +10,9 @@ import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
 import useSound from "use-sound"
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { twMerge } from "tailwind-merge";
+
 interface PlayerContentProps {
     song: Song;
 }
@@ -18,8 +21,11 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song: activeSong }) => {
     const {playList, setPlayList, setActiveSong} = usePlayer();
     const [volume, setVolume] = useState(1)
     const [isPlaying, setIsPlaying] = useState(false)
-    const PlayIcon = isPlaying ? BsPauseFill : BsPlayFill;
+    const [isLoadingAudio, setIsLoadingAudio] = useState(true);
+
+    const PlayIcon = isLoadingAudio ? FaSpinner : isPlaying ? BsPauseFill : BsPlayFill;
     const VolumeIcon = volume === 0 ?  HiSpeakerXMark : HiSpeakerWave;
+
     const onPlayNext = () => {
         if (playList.length === 0) {
             return;
@@ -58,6 +64,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song: activeSong }) => {
             setIsPlaying(false);
             onPlayNext();
         },
+        onload: () => setIsLoadingAudio(false),
         onpause: () => setIsPlaying(false),
         format: ["mp3"]
     })
@@ -70,6 +77,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song: activeSong }) => {
     }, [sound])
 
     const handlePlay = () => {
+        if (isLoadingAudio){
+            return;
+        }
         if (isPlaying) {
             pause();
         }else{
@@ -108,7 +118,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song: activeSong }) => {
 
                 <div onClick={handlePlay} 
                 className="flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer">
-                    <PlayIcon size={30} className="text-black"/>
+                    <PlayIcon size={30} className={`text-black ${isLoadingAudio && 'loaderIcon'}`}/>
                 </div>
                 <AiFillStepForward onClick={onPlayNext} size={30} className="text-neutral-400
                 cursor-pointer hover:text-white transition"/>
